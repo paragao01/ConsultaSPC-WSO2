@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/spc" name="SPCAPI" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="POST" uri-template="/consulta">
+        <inSequence>
+            <sequence key="SPC_CheckinParameters_Sequence"/>
+            <payloadFactory media-type="xml">
+                <format>
+                    <SPCA-XML xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchemainstance" xsi:noNamespaceSchemaLocation="http://www.scpc.inf.br/spcn/spcaxmlefx.xsd">
+                        <VERSAO>20151030</VERSAO>
+                        <SOLICITACAO>
+                            <S-CODIGO>$1</S-CODIGO>
+                            <S-SENHA>$2</S-SENHA>
+                            <S-CONSULTA>310</S-CONSULTA>
+                            <S-SOLICITANTE>RJ001</S-SOLICITANTE>
+                            <S-CPF>$3</S-CPF>
+                            <S-TIPO-CREDITO>XX</S-TIPO-CREDITO>
+                            <S-ACERTA-PRODUTO>
+                                <S-ACERTA-SCORE>N</S-ACERTA-SCORE>
+                                <S-ACERTA-SCORE-12>N</S-ACERTA-SCORE-12>
+                                <S-ACERTA-SCORE-CC>N</S-ACERTA-SCORE-CC>
+                                <S-ACERTA-CHEQUE>N</S-ACERTA-CHEQUE>
+                            </S-ACERTA-PRODUTO>
+                        </SOLICITACAO>
+                    </SPCA-XML>
+                </format>
+                <args>
+                    <arg evaluator="json" expression="$"/>
+                    <arg evaluator="json" expression="$"/>
+                    <arg evaluator="json" expression="$"/>
+                </args>
+            </payloadFactory>
+            <call>
+                <endpoint key="SPCEndpoint"/>
+            </call>
+            <property description="XMLtoJSON" name="messageType" scope="axis2" type="STRING" value="application/json"/>
+            <respond description="RespostaSPC"/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>

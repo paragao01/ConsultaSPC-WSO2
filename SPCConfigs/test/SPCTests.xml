@@ -1,0 +1,46 @@
+<unit-test>
+    <artifacts>
+        <test-artifact>
+            <artifact>/SPCConfigs/src/main/synapse-config/api/SPCAPI.xml</artifact>
+        </test-artifact>
+        <supportive-artifacts>
+            <artifact>/SPC/SPCConfigs/src/main/synapse-config/endpoints/SPCEndpoint.xml</artifact>
+            <artifact>/SPC/SPCConfigs/src/main/synapse-config/sequences/SPC_CheckinParameters_Sequence.xml</artifact>
+        </supportive-artifacts>
+        <registry-resources>
+            <registry-resource>
+                <file-name>Spc_Tranformation.xslt</file-name>
+                <artifact>/SPC/SPCRegistryResources/Spc_Tranformation.xslt</artifact>
+                <registry-path>/_system/config/transformations</registry-path>
+                <media-type>application/xslt+xml</media-type>
+            </registry-resource>
+        </registry-resources>
+        <connector-resources/>
+    </artifacts>
+    <test-cases>
+        <test-case name="ResponseValidation">
+            <input>
+                <request-path>/consulta</request-path>
+                <request-method>POST</request-method>
+                <request-protocol>http</request-protocol>
+                <payload><![CDATA[{
+	"codigo": "*****",
+	"senha": "******",
+	"cpf": "99999999999"
+}]]></payload>
+                <properties>
+                    <property name="Content-Type" scope="transport" value="application/json"/>
+                </properties>
+            </input>
+            <assertions>
+                <assertNotNull>
+                    <actual>$body</actual>
+                    <message>Response ERRO</message>
+                </assertNotNull>
+            </assertions>
+        </test-case>
+    </test-cases>
+    <mock-services>
+        <mock-service>/SPC/SPCConfigs/test/resources/mock-services/SPCMockBackEnd.xml</mock-service>
+    </mock-services>
+</unit-test>

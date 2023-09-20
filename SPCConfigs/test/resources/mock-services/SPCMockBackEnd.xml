@@ -1,0 +1,53 @@
+<mock-service>
+    <service-name>SPCEndpoint</service-name>
+    <port>9091</port>
+    <context>/spc</context>
+    <resources>
+        <resource>
+            <sub-context>/consulta</sub-context>
+            <method>POST</method>
+            <request>
+                <payload><![CDATA[<SPCA-XML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.scpc.inf.br/spcn/spcaxmlefx.xsd">
+<VERSAO>20151030</VERSAO>
+<SOLICITACAO>
+<S-CODIGO>99999</S-CODIGO>
+<S-SENHA>*****</S-SENHA>
+<S-CONSULTA>310</S-CONSULTA>
+<S-SOLICITANTE>RJ001</S-SOLICITANTE>
+<S-CPF>99999999999</S-CPF>
+<S-TIPO-CREDITO>XX</S-TIPO-CREDITO>
+<S-ACERTA-PRODUTO>
+<S-ACERTA-SCORE>N</S-ACERTA-SCORE>
+<S-ACERTA-SCORE-12>N</S-ACERTA-SCORE-12>
+<S-ACERTA-SCORE-CC>N</S-ACERTA-SCORE-CC>
+<S-ACERTA-CHEQUE>N</S-ACERTA-CHEQUE>
+</S-ACERTA-PRODUTO>
+</SOLICITACAO>
+</SPCA-XML>]]></payload>
+                <headers>
+                    <header name="Content-Type" value="application/xml"/>
+                </headers>
+            </request>
+            <response>
+                <status-code>200</status-code>
+                <payload><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
+<SPCA-XML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.scpc.inf.br/spcn/spcaxml.xsd">
+    <SOLICITACAO>
+        <S-CODIGO>99999</S-CODIGO>
+        <S-CONSULTA>310</S-CONSULTA>
+        <S-SOLICITANTE>RJ001</S-SOLICITANTE>
+        <S-CPF>99999999999</S-CPF>
+        <S-TIPO-CREDITO>OU</S-TIPO-CREDITO>
+    </SOLICITACAO>
+    <RESPOSTA>
+        <IP-SOLICITANTE>179.192.188.155</IP-SOLICITANTE>
+        <RESPOSTA-RETORNO>
+            <STATUS-RESPOSTA>9</STATUS-RESPOSTA>
+            <MENSAGEM-RESPOSTA>       CPF NAO DISPONIVEL NA BASE</MENSAGEM-RESPOSTA>
+        </RESPOSTA-RETORNO>
+    </RESPOSTA>
+</SPCA-XML>]]></payload>
+            </response>
+        </resource>
+    </resources>
+</mock-service>

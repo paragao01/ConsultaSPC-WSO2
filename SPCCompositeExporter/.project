@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>SPCCompositeExporter</name>
+	<comment></comment>
+	<projects>
+		<project>SPC</project>
+		<project>SPCConfigs</project>
+		<project>SPCRegistryResources</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>org.wso2.developerstudio.eclipse.distribution.project.nature</nature>
+	</natures>
+</projectDescription>

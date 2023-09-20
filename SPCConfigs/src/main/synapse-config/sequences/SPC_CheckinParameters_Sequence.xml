@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="SPC_CheckinParameters_Sequence" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <propertyGroup description="ParametrosPayload">
+        <property expression="json-eval($.codigo)" name="codigo" scope="default" type="STRING"/>
+        <property expression="json-eval($.senha)" name="senha" scope="default" type="STRING"/>
+        <property expression="json-eval($.cpf)" name="cpf" scope="default" type="STRING"/>
+    </propertyGroup>
+    <log description="LogParametros" level="custom">
+        <property expression="fn:concat('Usuario: ', $ctx:codigo, ',Senha: ',$ctx:senha, ' ,CPF: ',$ctx:cpf)" name="Conssulta SPC"/>
+    </log>
+    <!-- Verifica se os parâmetros obrigatórios foram informados -->
+    <filter regex="false" source="boolean($ctx:codigo)">
+        <then>
+            <property name="badReqMessage" scope="default" type="STRING" value="Não foi possível processar a requisição devido a um formato inválido de dados de entrada. O parâmetro 'codigo' é obrigatório!"/>
+        </then>
+        <else/>
+    </filter>
+    <filter regex="false" source="boolean($ctx:senha)">
+        <then>
+            <property name="badReqMessage" scope="default" type="STRING" value="Não foi possível processar a requisição devido a um formato inválido de dados de entrada. O parâmetro 'senha' é obrigatório!"/>
+        </then>
+        <else/>
+    </filter>
+    <filter regex="false" source="boolean($ctx:cpf)">
+        <then>
+            <property name="badReqMessage" scope="default" type="STRING" value="Não foi possível processar a requisição devido a um formato inválido de dados de entrada. O parâmetro 'cpf' é obrigatório!"/>
+        </then>
+        <else/>
+    </filter>
+    <!-- Monta uma estrutura de falha caso algum parâmetro obrigatório não tenha sido informado -->
+    <filter regex="true" source="boolean($ctx:badReqMessage)">
+        <then>
+            <log level="custom">
+                <property expression="concat('[ERROR] - ', $ctx:badReqMessage)" name="step"/>
+            </log>
+            <payloadFactory media-type="json">
+                <format>{ "status": "400_Bad_Request", "message": "$1", "has_errors": "true" }</format>
+                <args>
+                    <arg evaluator="xml" expression="$ctx:badReqMessage"/>
+                </args>
+            </payloadFactory>
+            <property name="HTTP_SC" scope="axis2" type="STRING" value="400"/>
+            <respond/>
+        </then>
+        <else>
+            <log level="custom">
+                <property name="step" value="Success!"/>
+            </log>
+            <enrich>
+                <source clone="false" type="body"/>
+                <target property="API_REQUEST" type="property"/>
+            </enrich>
+        </else>
+    </filter>
+</sequence>

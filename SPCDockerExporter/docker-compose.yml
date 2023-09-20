@@ -1,0 +1,18 @@
+version: '3'
+services:
+    esb:
+        image: wso2/wso2mi-centos:1.2.0.82-centos
+        build: .
+        container_name: wso2mi-spc
+        ports:
+            - "8290:8290"
+            - "8253:8253"
+        env_file:
+            #- .env
+            - .env.test
+       
+        networks:
+            - wso2mi-spc-network
+networks:
+    wso2mi-spc-network:
+        driver: bridge
